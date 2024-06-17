@@ -24,9 +24,7 @@ def printGameBoard():
                 print(" ", gameBoard[x][y], end="  |")
     print("\n   ------------------------------------")
 
-printGameBoard()
-
-def modifyTurn(positionPicked, turn):
+def modifyArray(positionPicked, turn):
     gameBoard[positionPicked[0]][positionPicked[1]] = turn
 
 def checkForWinner(chip):
@@ -103,7 +101,36 @@ def gravityChecker(intendedCoordinate):
     return False
 
     
-
-
 turnCounter = 0
 while True:
+    if(turnCounter % 2 == 0):
+        printGameBoard()
+        while True:
+            positionPicked = input("\nChoose a position: ")
+            coordinate = coordinateParser(positionPicked)
+            try:
+                # Check if the space is available
+                if(isSpaceAvailable(coordinate) and gravityChecker(coordinate)):
+                    modifyArray(coordinate, '🏍️')
+                    break
+                else:
+                    print("Not a valid coordinate")
+            except:
+                print("Error occured. Please try again.")
+        winner = checkForWinner('🏍️')
+        turnCounter += 1
+    # It's the computers turn
+    else:
+        while True:
+            cpuChoice = [random.choice(potentialNumbers), random.randint(0,5)]
+            cpuCoordinate = coordinateParser(cpuChoice)
+            if(isSpaceAvailable(cpuCoordinate) and gravityChecker(cpuCoordinate)):
+                modifyArray(coordinate, '🏎️')
+                break
+        turnCounter += 1
+        winner = checkForWinner('🏎️')
+
+    if(winner):
+        printGameBoard()
+        break
+             
